@@ -76,14 +76,14 @@ io.on("connection", (socket) => {
     });
 });
 
-// check expired transactions every 1 minute (temporarily)
-setInterval(async () => {
-    try {
-        await checkExpiredTransactions(io);
-    } catch (error) {
-        console.error("Error checking expired transactions:", error);
-    }
-}, 60000);
+// // check expired transactions every 1 minute (temporarily)
+// setInterval(async () => {
+//     try {
+//         await checkExpiredTransactions(io);
+//     } catch (error) {
+//         console.error("Error checking expired transactions:", error);
+//     }
+// }, 60000);
 
 httpServer.listen(PORT, () => {
     console.log(`Listening on http://localhost:${PORT}`);
