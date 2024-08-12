@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "dev": "npx nodemon index.js",
-        "start": "npx sequelize-cli db:migrate && node index.js",
+        "start": "npx sequelize-cli db:migrate",
         "fresh": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate"
     },
     "keywords": [],
