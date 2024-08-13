@@ -15,14 +15,12 @@ jobs:
             - name: Generate env from secrets
               run: |
                   echo "${{ secrets.TERBANGIN_HEROKU_ENV }}" | tr ';' '\n' >> .env
+                  cat .env
 
             - name: Set up Node.js
               uses: actions/setup-node@v3
               with:
                   node-version: "20"
-
-            - name: Check .env content (optional, for debugging)
-              run: cat .env
 
             - name: Install dependencies
               run: npm install
@@ -33,3 +31,7 @@ jobs:
                   heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
                   heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
                   heroku_email: ${{ secrets.HEROKU_EMAIL }}
+
+            - name: Set Heroku Config Vars
+              run: |
+                  heroku config:set $(cat .env | xargs) -a ${{ secrets.HEROKU_APP_NAME }}
