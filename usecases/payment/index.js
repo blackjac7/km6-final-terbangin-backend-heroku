@@ -119,8 +119,8 @@ exports.checkExpiredTransactions = async (io) => {
         for (const payment of pendingPayments) {
             const transactionCreatedAt = moment(payment.createdAt);
 
-            // Check if the snap token has expired (e.g., 5 minutes duration)
-            if (moment().isAfter(transactionCreatedAt.add(5, "minutes"))) {
+            // Check if the snap token has expired (e.g., 24 hours duration)
+            if (moment().isAfter(transactionCreatedAt.add(24, "hours"))) {
                 console.log("Payment expired:", payment.id);
                 console.log("Payment status:", PaymentStatus.CANCELLED);
                 console.log("Payment user ID:", payment.userId);

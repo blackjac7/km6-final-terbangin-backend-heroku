@@ -41,6 +41,17 @@ app.use(async function (req, res, next) {
 
 app.use("/api/v1", router);
 
+// check expired transactions every 1 minute (temporarily)
+app.get("/trigger-expired-check", async (req, res) => {
+    try {
+        await checkExpiredTransactions(io);
+        res.status(200).send("Check expired transactions executed.");
+    } catch (error) {
+        console.error("Error checking expired transactions:", error);
+        res.status(500).send("Error executing task.");
+    }
+});
+
 // error middleware
 app.use((err, _, res, __) => {
     let statusCode = 500;
@@ -60,7 +71,7 @@ app.use((err, _, res, __) => {
     });
 });
 
-// kalo routenya ga terdaftar
+// other routes
 app.use("*", (_, res) => {
     res.status(404).json({
         data: null,
@@ -76,14 +87,14 @@ io.on("connection", (socket) => {
     });
 });
 
-// // check expired transactions every 1 minute (temporarily)
-// setInterval(async () => {
-//     try {
-//         await checkExpiredTransactions(io);
-//     } catch (error) {
-//         console.error("Error checking expired transactions:", error);
-//     }
-// }, 60000);
+// check expired transactions every 1 minute (temporarily)
+setInterval(async () => {
+    try {
+        await checkExpiredTransactions(io);
+    } catch (error) {
+        console.error("Error checking expired transactions:", error);
+    }
+}, 86400000); // 1 day in milliseconds
 
 httpServer.listen(PORT, () => {
     console.log(`Listening on http://localhost:${PORT}`);
